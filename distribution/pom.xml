@@ -22,9 +22,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.apache.directory.mavibot</groupId>
+    <groupId>net.xdob.directory.mavibot</groupId>
     <artifactId>mavibot-parent</artifactId>
-    <version>1.0.0-M8</version>
+    <version>1.0.0-M8V20240813</version>
   </parent>
  
   <artifactId>distribution</artifactId>

@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>34</version>
+    <version>40</version>
     <relativePath />
   </parent>
 
@@ -32,8 +32,8 @@
     <url>http://directory.apache.org/mavibot/</url>
   </organization>
 
-  <groupId>org.apache.directory.mavibot</groupId>
-  <version>1.0.0-M8</version>
+  <groupId>net.xdob.directory.mavibot</groupId>
+  <version>1.0.0-M8V20240813</version>
   <artifactId>mavibot-parent</artifactId>
   <name>ApacheDS Mavibot Parent</name>
   <packaging>pom</packaging>
@@ -76,18 +76,38 @@
   </licenses>
 
   <properties>
+    <host>nexus.doob.net.cn</host>
     <!-- Dependencies versions ========================================== -->
     <junit.version>4.12</junit.version>
-    <commons.collections.version>3.2.1</commons.collections.version>
+    <commons.collections.version>4.4</commons.collections.version>
     <commons.io.version>2.4</commons.io.version>
     <slf4j.api.version>1.7.10</slf4j.api.version>
     <slf4j.log4j12.version>1.7.10</slf4j.log4j12.version>
   </properties>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Snapshots</name>
+      <url>http://${host}:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>releases</id>
+      <name>Internal Releases</name>
+      <url>http://${host}:8081/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
   <modules>
     <module>mavibot</module>
     <module>distribution</module>
   </modules>
+  <repositories>
+    <repository>
+      <id>repo_5</id>
+      <name>repo_5</name>
+      <url>http://${host}:8081/repository/maven-public/</url>
+    </repository>
+  </repositories>
 
   <dependencyManagement>
     <dependencies>
@@ -164,15 +184,14 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.8</source>
+          <target>1.8</target>
           <optimize>true</optimize>
 		  <debug>true</debug>
-          <showDeprecations>true</showDeprecations>
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-	  
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -199,7 +218,7 @@
           </tagBase>
         </configuration>
       </plugin>
-    
+
       <plugin>
            <groupId>org.codehaus.mojo</groupId>
            <artifactId>findbugs-maven-plugin</artifactId>
@@ -214,14 +233,14 @@
         <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
           <execution>
-            <id>enforce-java-16</id>
+            <id>enforce-java-18</id>
             <goals>
               <goal>enforce</goal>
             </goals>
             <configuration>
               <rules>
                 <requireJavaVersion>
-                  <version>1.6.0</version>
+                  <version>1.8.0</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
@@ -247,151 +266,6 @@
         </executions>
       </plugin>
 
-      <!-- The Javadoc and xref generation plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <dependencies>
-          <!-- Add support for 'scp'/'sftp' -->
-          <dependency>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-ssh</artifactId>
-            <version>2.1</version>
-          </dependency>
-        
-          <!-- Add support for 'scpexe' -->
-          <dependency>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-ssh-external</artifactId>
-            <version>2.1</version>
-          </dependency>
-        </dependencies>
-        
-        <configuration>
-          <reportPlugins>
-            <!-- JXR plugin generates cross-references -->
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jxr-plugin</artifactId>
-              <configuration>
-                  <aggregate>true</aggregate>
-              </configuration>
-            </plugin>
-
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-report-plugin</artifactId>
-              <configuration>
-                <aggregate>true</aggregate> 
-                <argLine>-Xmx1024m -XX:+UseConcMarkSweepGC</argLine>
-              </configuration>
-            </plugin>
-
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-project-info-reports-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>taglist-maven-plugin</artifactId>
-              <configuration>
-                <tags>
-                  <tag>TODO</tag>
-                  <tag>@todo</tag>
-                  <tag>@deprecated</tag>
-                  <tag>FIXME</tag>
-                </tags>
-              </configuration>
-            </plugin>
-
-            <!-- The Javadoc generation plugin -->
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <configuration>
-                <minmemory>512m</minmemory>
-                <maxmemory>1g</maxmemory>
-                <linksource>true</linksource>
-                <tags>
-                  <tag>
-                    <name>todo</name>
-                    <!-- todo tag for all places -->
-                    <placement>a</placement>
-                    <head>To do:</head>
-                  </tag>
-                </tags>
-                <source>1.6</source>
-              </configuration>
-              <reportSets>
-                <reportSet>
-                  <reports>
-                    <report>aggregate</report>
-                    <report>test-aggregate</report>
-                  </reports>
-                </reportSet>
-              </reportSets>
-            </plugin>
-
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>versions-maven-plugin</artifactId>
-              <reportSets>
-                <reportSet>
-                  <reports>
-                    <report>dependency-updates-report</report>
-                    <report>plugin-updates-report</report>
-                    <report>property-updates-report</report>
-                  </reports>
-                </reportSet>
-              </reportSets>
-            </plugin>
-
-            <plugin>
-              <groupId>org.apache.rat</groupId>
-              <artifactId>apache-rat-plugin</artifactId>
-              <!-- must add configuration here too, it isn't inherited from <pluginConfiguration> :-( -->
-              <configuration>
-                <excludeSubProjects>false</excludeSubProjects>
-                <excludes>
-                  <!-- MAVEN_DEFAULT_EXCLUDES -->
-                  <exclude>**/target/**/*</exclude>
-                  <exclude>**/cobertura.ser</exclude>
-                  <!-- ECLIPSE_DEFAULT_EXCLUDES -->
-                  <exclude>**/.classpath</exclude>
-                  <exclude>**/.project</exclude>
-                  <exclude>**/.settings/**/*</exclude>
-                  <!-- IDEA_DEFAULT_EXCLUDES -->
-                  <exclude>**/*.iml</exclude>
-                  <exclude>**/*.ipr</exclude>
-                  <exclude>**/*.iws</exclude>
-                  <!-- MANIFEST_MF_EXCLUDES -->
-                  <exclude>**/MANIFEST.MF</exclude>
-                  <!-- 3RD_PARTY_LICENSES -->
-                  <exclude>distribution/src/main/release/licenses/*</exclude>
-                  <exclude>src/main/release/licenses/*</exclude>
-                  <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
-                  <exclude>**/dependency-reduced-pom.xml</exclude>
-                  <!-- Images files -->
-                  <exclude>**/img/*.png</exclude>
-                  <exclude>**/img/*.graphml</exclude>
-                </excludes>
-              </configuration>
-            </plugin>
-
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>javancss-maven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>jdepend-maven-plugin</artifactId>
-            </plugin>
-
-          </reportPlugins>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
