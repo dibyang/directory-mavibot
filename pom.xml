@@ -224,7 +224,6 @@
            <artifactId>findbugs-maven-plugin</artifactId>
            <configuration>
               <findbugsXmlOutput>true</findbugsXmlOutput>
-              <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
               <xmlOutput>true</xmlOutput>
            </configuration>
       </plugin>
@@ -284,19 +283,12 @@
                 <goals>
                   <goal>javadoc</goal>
                 </goals>
-                <configuration>
-                  <aggregate>true</aggregate>
-                </configuration>
               </execution>
             </executions>
           </plugin>
 
           <plugin>
             <artifactId>maven-jxr-plugin</artifactId>
-            <configuration>
-              <aggregate>true</aggregate>
-            </configuration>
-
             <executions>
               <execution>
                 <phase>install</phase>
