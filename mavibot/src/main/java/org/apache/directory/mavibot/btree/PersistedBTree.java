@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.commons.collections.map.LRUMap;
+import org.apache.commons.collections4.map.LRUMap;
 import org.apache.directory.mavibot.btree.exception.KeyNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

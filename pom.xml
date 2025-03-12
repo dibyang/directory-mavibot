@@ -33,7 +33,7 @@
   </organization>
 
   <groupId>net.xdob.directory.mavibot</groupId>
-  <version>1.0.0-M8V20240813</version>
+  <version>1.0.0-M8V20250312</version>
   <artifactId>mavibot-parent</artifactId>
   <name>ApacheDS Mavibot Parent</name>
   <packaging>pom</packaging>
@@ -79,10 +79,10 @@
     <host>nexus.doob.net.cn</host>
     <!-- Dependencies versions ========================================== -->
     <junit.version>4.12</junit.version>
-    <commons.collections.version>4.4</commons.collections.version>
+    <commons.collections.version>4.5.0-M3</commons.collections.version>
     <commons.io.version>2.4</commons.io.version>
-    <slf4j.api.version>1.7.10</slf4j.api.version>
-    <slf4j.log4j12.version>1.7.10</slf4j.log4j12.version>
+    <slf4j.api.version>1.7.25</slf4j.api.version>
+    <slf4j.log4j12.version>1.7.25</slf4j.log4j12.version>
   </properties>
 
   <distributionManagement>
