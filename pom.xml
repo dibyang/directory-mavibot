@@ -33,7 +33,7 @@
   </organization>
 
   <groupId>net.xdob.directory.mavibot</groupId>
-  <version>1.0.0-M8V20250312</version>
+  <version>1.0.0-M8V20260126</version>
   <artifactId>mavibot-parent</artifactId>
   <name>ApacheDS Mavibot Parent</name>
   <packaging>pom</packaging>
