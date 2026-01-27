@@ -88,13 +88,13 @@
   <distributionManagement>
     <snapshotRepository>
       <id>snapshots</id>
-      <name>Snapshots</name>
-      <url>http://${host}:8081/repository/maven-snapshots/</url>
+      <name>ossrh-snapshots</name>
+      <url>https://ossrh-staging-api.central.sonatype.com/content/repositories/snapshots/</url>
     </snapshotRepository>
     <repository>
-      <id>releases</id>
+      <id>ossrh</id>
       <name>Internal Releases</name>
-      <url>http://${host}:8081/repository/maven-releases/</url>
+      <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
   <modules>
@@ -264,7 +264,46 @@
           </execution>
         </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
+        <!-- 无需任何configuration，插件自动读取settings.xml中的signing.*属性 -->
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <!-- 绑定到package阶段：执行mvn package时自动生成Javadoc包 -->
+            <phase>package</phase>
+            <goals>
+              <!-- 核心goal：生成-javadoc.jar包，仓库必须检测到这个文件 -->
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <!-- 解决中文乱码、语法警告导致构建失败的问题（避免Javadoc包生成中断） -->
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <docencoding>UTF-8</docencoding>
+          <charset>UTF-8</charset>
+          <!-- 忽略注释小问题，避免生成Javadoc包失败 -->
+          <failOnError>false</failOnError>
+          <!-- 兼容JDK11+的严格检查，解决JDK版本导致的生成失败 -->
+          <additionalJOption>-Xdoclint:none</additionalJOption>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
